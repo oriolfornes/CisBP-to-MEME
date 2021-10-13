@@ -8,6 +8,7 @@ import re
 
 def get_motifs_to_TFs(info_file):
 
+    # Initialize
     motif2tfs = []
 
     df = pd.read_csv("./data/CisBP-mouse/%s" % info_file,
@@ -15,11 +16,16 @@ def get_motifs_to_TFs(info_file):
     df = df[df["TF_Status"] != "N"]
     df = df.groupby("Motif_ID")["TF_Name"].aggregate(set)
     for motif, tfs in df.iteritems():
-        motif2tfs.append([motif, ";".join(sorted(tfs))])
+        motif2tfs.append([motif, "::".join(sorted(tfs))])
     df = pd.DataFrame(motif2tfs, columns=["Motif_ID", "TF_Names"])
     df.to_csv("%s.tsv" % file2prefixes[info_file], sep="\t")
 
-    return(set(df.Motif_ID.to_list()))
+    # Motifs 2 TFs
+    motif2tfs = {}
+    for motif_id, tf_name in zip(df.Motif_ID.to_list(), df.TF_Names.to_list()):
+        motif2tfs.setdefault(motif_id, tf_name)
+
+    return(motif2tfs)
 
 def get_JASPAR_bundle(info_file, allowed_pwms):
 
@@ -34,7 +40,7 @@ def get_JASPAR_bundle(info_file, allowed_pwms):
             with open(os.path.join(pwms_dir, pwm_file)) as handle:
                 pwm = motifs.read(handle, "pfm-four-columns")
                 pwm.matrix_id = pwm_file[:11]
-                pwm.name = pwm_file[:11]
+                pwm.name = allowed_pwms[pwm_file[:11]]
                 pwms.append(copy.deepcopy(pwm))
         except:
             pass

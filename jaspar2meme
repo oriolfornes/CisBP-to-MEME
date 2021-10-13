@@ -1,16 +1,16 @@
-#!/Users/ofornes/opt/anaconda3/envs/MEME/bin/perl -w
+#!/usr/bin/env perl -w
 
 #**********************************************************************/
 #* Copyright (c) University of Washington,                            */
 #* Department of Genome Sciences, 2006. Written by Shobhit Gupta      */
-#* and Timothy L. Bailey     					      */
+#* and Timothy L. Bailey     					                                */
 #* All rights reserved.                                               */
 #**********************************************************************/ 
 
 use warnings;
 use strict;
 
-use lib qw(/Users/ofornes/opt/anaconda3/envs/MEME/lib/meme-5.3.0/perl);
+# use lib qw(/Users/ofornes/opt/anaconda3/envs/MEME/lib/meme-5.3.0/perl);
 
 use Alphabet qw(dna rna protein);
 use MotifUtils qw(seq_to_intern matrix_to_intern intern_to_meme read_background_file);
